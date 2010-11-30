@@ -8,8 +8,8 @@ namespace XSLUtility
 {
     class Program : XSLUtility
     {
-        Program()
-            : base(new FileInfo("example.xslt").FullName)
+        Program(FileInfo xsl)
+            : base(xsl.FullName)
         {
             // add this object's public functions as callable by the namespace 'urn:custom'
             this.AddExtensionObject("urn:custom", this);
@@ -28,19 +28,29 @@ namespace XSLUtility
         }
         static void Main(string[] args)
         {
-            Program prog = new Program();
+            FileInfo xsl = new FileInfo("example.xslt");
+            Program prog = new Program(xsl);
+
             FileInfo output = new FileInfo("output.xml");
-            //FileInfo input = new FileInfo("input.xml");
+            
+
             // add a prameter
             prog.AddParam("example", "hey there");
 
             // transform the xml text
             prog.transformXml("<?xml version=\"1.0\" encoding=\"utf-8\" ?><root></root>", output);
+            
+            // another example
+            //FileInfo input = new FileInfo("input.xml");
             //prog.transformXmlDocument(input, output);
 
+            Console.WriteLine();
             // show the xml output file
+            
+            Console.WriteLine(output.Name + " contents:");
             Console.WriteLine(File.ReadAllText(output.FullName));
 
+            Console.WriteLine();
             Console.WriteLine("Press any key to quit.");
             Console.ReadKey();
         }
